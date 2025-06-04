@@ -4,9 +4,9 @@ import { getAllNotes, createNote, updateNote, deleteNote } from "../controllers/
 const router = express.Router(); 
 
 // Controllers -> found in notesController.js file
-router.get("/", getAllNotes)
-router.post("/", createNote)
-router.put("/", updateNote)
-router.delete("/", deleteNote)
+router.get("/", getAllNotes);
+router.post("/", createNote);
+router.put("/", updateNote);
+router.delete("/", deleteNote);
 
 export default router;

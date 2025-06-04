@@ -1,7 +1,15 @@
+import Note from "../models/Note.js";
 
-export function getAllNotes(req, res) 
+export async function getAllNotes(req, res) 
 {
-    res.status(200).send("You just fetched the notes.");
+    try {
+        const notes = await Note.find();
+        res.status(200).json(notes);
+    }
+    catch (error) {
+        console.error("Error in getAllNotes controller", error);
+        res.status(500).json({message:"Internal server error"});
+    }
 };
 
 // Creating a note route D
@@ -19,4 +27,4 @@ export function updateNote (req, res)
 export function deleteNote (req, res)
 {
     res.status(200).json({message:"Note deleted successfully"})
-}
+};
