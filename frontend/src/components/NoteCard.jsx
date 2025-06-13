@@ -1,4 +1,4 @@
-import { PenSquareIcon, Trash2Icon } from "lucide-react";
+import { PenSquareIcon, Trash2Icon, CalendarIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatDate } from "../lib/utils";
 import api from "../lib/axios";
@@ -6,17 +6,13 @@ import toast from "react-hot-toast";
 
 const NoteCard = ({ note, setNotes }) => {
   const handleDelete = async (e, id) => {
-    e.preventDefault(); // Stop the Link navigation
-    e.stopPropagation(); // Stop event bubbling
+    e.preventDefault();
+    e.stopPropagation();
     
     if (!window.confirm("Are you sure you want to delete this note?")) return;
     
     try {
-      console.log("Attempting to delete note with ID:", id);
-      
       await api.delete(`/notes/${id}`);
-      
-      // Remove note from state
       setNotes((prev) => prev.filter((note) => note._id !== id));
       toast.success("Note deleted successfully");
     } catch (error) {
@@ -29,30 +25,45 @@ const NoteCard = ({ note, setNotes }) => {
     }
   };
 
+  // Remove the handleEdit function that was preventing navigation
+  // OR keep it but remove e.preventDefault()
   const handleEdit = (e) => {
-    e.preventDefault(); // Stop the Link navigation
-    e.stopPropagation(); // Stop event bubbling
+    e.stopPropagation(); // Only stop bubbling, allow navigation
   };
 
   return (
-    <div className="card bg-base-100 hover:shadow-lg transition-all duration-200 border-t-4 border-solid border-[#00FF9D]">
-      <div className="card-body">
-        <h3 className="card-title text-base-content">{note.title}</h3>
-        <p className="text-base-content/70 line-clamp-3">{note.content}</p>
-        <div className="card-actions justify-between items-center mt-4">
-          <span className="text-sm text-base-content/60">
-            {formatDate(new Date(note.createdAt))}
-          </span>
-          <div className="flex items-center gap-1">
+    <div className="group card bg-base-100 hover:shadow-2xl transition-all duration-300 border border-base-content/10 hover:border-primary/30 transform hover:-translate-y-1">
+      {/* Gradient accent bar */}
+      <div className="h-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-t-2xl"></div>
+      
+      <div className="card-body p-6">
+        {/* Note content */}
+        <h3 className="card-title text-base-content text-xl font-semibold mb-3 line-clamp-2">
+          {note.title}
+        </h3>
+        <p className="text-base-content/70 line-clamp-3 text-sm leading-relaxed mb-4">
+          {note.content}
+        </p>
+        
+        {/* Footer */}
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-base-content/10">
+          {/* Date */}
+          <div className="flex items-center gap-2 text-sm text-base-content/60">
+            <CalendarIcon className="size-4" />
+            <span>{formatDate(new Date(note.createdAt))}</span>
+          </div>
+          
+          {/* Action buttons */}
+          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <Link 
-              to={`/edit/${note._id}`} 
-              className="btn btn-ghost btn-xs"
+              to={`/edit/${note._id}`}
+              className="btn btn-ghost btn-sm text-base-content/60 hover:text-primary hover:bg-primary/10"
               onClick={handleEdit}
             >
               <PenSquareIcon className="size-4" />
             </Link>
             <button
-              className="btn btn-ghost btn-xs text-error"
+              className="btn btn-ghost btn-sm text-base-content/60 hover:text-error hover:bg-error/10"
               onClick={(e) => handleDelete(e, note._id)}
             >
               <Trash2Icon className="size-4" />

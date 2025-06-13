@@ -22,11 +22,6 @@ app.use(
 app.use(express.json()); // middleware: parses JSON bodies: req.body
 app.use(rateLimiter); // checks rate limiting
 
-// app.use((req, res, next) => {
-//     console.log(`Req method is ${req.method} & Req URL is ${req.url}`);
-//     next();
-// });
-
 app.use("/api/notes", notesRoutes);
 
 // Debug route to test backend

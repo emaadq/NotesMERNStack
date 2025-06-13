@@ -5,9 +5,12 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    sourcemap: false, // Disable source maps to avoid parse errors
+    sourcemap: false, // Disable source maps for build
+  },
+  css: {
+    devSourcemap: false, // Disable CSS source maps
   },
   server: {
-    sourcemap: false, // Also disable for dev server
+    sourcemap: false, // Disable source maps for dev server
   }
 })

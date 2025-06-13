@@ -2,12 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import HomePage from "./pages/HomePage";
 import CreatePage from "./pages/CreatePage"; // Import the real CreatePage
-
-const TestDetail = () => (
-  <div style={{ padding: '20px', color: 'white' }}>
-    <h1>Detail Page Test</h1>
-  </div>
-);
+import NoteDetailPage from "./pages/NoteDetailPage";
 
 const App = () => {
   return (
@@ -16,7 +11,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/create" element={<CreatePage />} /> {/* Use real CreatePage */}
-        <Route path="/note/:id" element={<TestDetail />} />
+        <Route path="/edit/:id" element={<NoteDetailPage/>} />
       </Routes>
       <Toaster
         position="top-right"
