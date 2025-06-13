@@ -6,26 +6,36 @@ import toast from "react-hot-toast";
 
 const NoteCard = ({ note, setNotes }) => {
   const handleDelete = async (e, id) => {
-    e.preventDefault(); // get rid of the navigation behaviour
-
+    e.preventDefault(); // Stop the Link navigation
+    e.stopPropagation(); // Stop event bubbling
+    
     if (!window.confirm("Are you sure you want to delete this note?")) return;
-
+    
     try {
+      console.log("Attempting to delete note with ID:", id);
+      
       await api.delete(`/notes/${id}`);
-      setNotes((prev) => prev.filter((note) => note._id !== id)); // get rid of the deleted one
+      
+      // Remove note from state
+      setNotes((prev) => prev.filter((note) => note._id !== id));
       toast.success("Note deleted successfully");
     } catch (error) {
-      console.log("Error in handleDelete", error);
-      toast.error("Failed to delete note");
+      console.error("Delete error:", error);
+      if (error.response?.status === 404) {
+        toast.error("Delete route not found - check your backend");
+      } else {
+        toast.error("Failed to delete note");
+      }
     }
   };
 
+  const handleEdit = (e) => {
+    e.preventDefault(); // Stop the Link navigation
+    e.stopPropagation(); // Stop event bubbling
+  };
+
   return (
-    <Link
-      to={`/note/${note._id}`}
-      className="card bg-base-100 hover:shadow-lg transition-all duration-200 
-      border-t-4 border-solid border-[#00FF9D]"
-    >
+    <div className="card bg-base-100 hover:shadow-lg transition-all duration-200 border-t-4 border-solid border-[#00FF9D]">
       <div className="card-body">
         <h3 className="card-title text-base-content">{note.title}</h3>
         <p className="text-base-content/70 line-clamp-3">{note.content}</p>
@@ -34,7 +44,11 @@ const NoteCard = ({ note, setNotes }) => {
             {formatDate(new Date(note.createdAt))}
           </span>
           <div className="flex items-center gap-1">
-            <Link to={`/edit/${note._id}`} className="btn btn-ghost btn-xs">
+            <Link 
+              to={`/edit/${note._id}`} 
+              className="btn btn-ghost btn-xs"
+              onClick={handleEdit}
+            >
               <PenSquareIcon className="size-4" />
             </Link>
             <button
@@ -46,7 +60,7 @@ const NoteCard = ({ note, setNotes }) => {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
