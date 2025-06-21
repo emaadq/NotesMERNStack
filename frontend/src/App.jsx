@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast"; // This is a react library that will help create more interactive components like success/failure icons
 import HomePage from "./pages/HomePage";
 import CreatePage from "./pages/CreatePage"; // Import the real CreatePage
 import NoteDetailPage from "./pages/NoteDetailPage";
